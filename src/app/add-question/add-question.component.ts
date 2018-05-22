@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, FormControl, FormArray, Validators, FormControlName} from '@angular/forms';
 
 @Component({
   selector: 'app-add-question',
@@ -7,9 +8,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddQuestionComponent implements OnInit {
 
-  constructor() { }
+  questionForm: FormGroup;
+
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
+
+    this.questionForm = this.fb.group({
+      questionName: ['', Validators.required],
+      categoryId: ['', Validators.required],
+      questionExplain: ['', Validators.required]
+  });
+
   }
 
 }
