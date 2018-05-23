@@ -36,10 +36,10 @@ export class AddQuestionComponent implements OnInit {
         answerId: '',
         answerName: '',
         isCorrect: ''
-    })
+    });
   }
 
-  saveQuestion(){
+  saveQuestion() {
     console.log(this.questionForm);
   }
 
