@@ -1,0 +1,17 @@
+<div class="container" *ngIf="listQuestions.length > 0;else noData">
+    <div *ngFor="let item of listQuestions" class="list-group">
+      <div class="list-group-item">
+        <p>{{item.id}}</p>
+        <p>{{item.name}}</p>
+      </div>
+      <a [routerLink]="['/edit-question', item.id]">
+        Edit Question
+      </a>
+    </div>
+</div>
+<div class="container">
+  <ng-template #noData>
+    <hr>
+    <h5>There are no users to display</h5>
+  </ng-template>
+</div>

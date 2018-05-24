@@ -31,10 +31,10 @@ export class AddQuestionComponent implements OnInit {
   ngOnInit() {
 
     this.questionForm = this.fb.group({
-      questionId: [0, Validators.required],
+      questionId: ['', Validators.required],
       questionName: ['', Validators.required],
       questionImage: ['', Validators.required],
-      categoryId: [0, Validators.required],
+      categoryId: ['', Validators.required],
       questionExplain: ['', Validators.required],
       answers: this.fb.array([this.buildAnswer()])
     });
@@ -60,7 +60,7 @@ export class AddQuestionComponent implements OnInit {
 
   buildAnswer(): FormGroup {
     return this.fb.group({
-        answerId: 0,
+        answerId: '',
         answerName: '',
         isCorrect: false
     });
