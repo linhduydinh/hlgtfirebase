@@ -11,6 +11,7 @@ import { FirebaseConfig} from './firebase.config';
 import { AddQuestionComponent } from './add-question/add-question.component';
 import { AngularFireStorageModule } from 'angularfire2/storage';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { FirestoreDataService } from './services/firebase.service';
 
 const appRoutes: Routes = [
   { path: 'home', component: AddQuestionComponent },
@@ -33,6 +34,7 @@ const appRoutes: Routes = [
     AngularFireStorageModule
   ],
   providers: [
+    FirestoreDataService
   ],
   bootstrap: [AppComponent]
 })

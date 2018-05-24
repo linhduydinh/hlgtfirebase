@@ -8,6 +8,7 @@ import { FileUpload } from '../models/file-upload';
 import { Question } from '../models/question';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
+import { FirestoreDataService } from '../services/firebase.service';
 
 @Component({
   selector: 'app-add-question',
@@ -16,19 +17,15 @@ import { AngularFireDatabase, AngularFireList } from 'angularfire2/database';
 })
 export class AddQuestionComponent implements OnInit {
 
-  //_db: AngularFirestore;
   questionForm: FormGroup;
   selectedFiles: FileList;
   currentUpload: FileUpload;
   imageUrl: string;
-  //questions: Observable<any[]>;
-  private basePath: string = '/images';
+  private basePath = '/images';
   questions: AngularFireList<Question>;
 
-  constructor(private fb: FormBuilder, private db: AngularFireDatabase, 
-    private afStorage: AngularFireStorage) { 
-    this.questions = db.list('questions');
-    //this._db = db;
+  constructor(private fb: FormBuilder, private db: AngularFireDatabase,
+    private afStorage: AngularFireStorage, private firestoreDataService: FirestoreDataService) {
   }
 
   ngOnInit() {
@@ -44,7 +41,7 @@ export class AddQuestionComponent implements OnInit {
 
   }
 
-  getData(){
+  getData() {
     this.questions = this.db.list('questions');
     return this.questions;
   }
@@ -72,22 +69,24 @@ export class AddQuestionComponent implements OnInit {
   saveQuestion() {
     console.log(this.questionForm);
 
-    let file = this.selectedFiles.item(0)
+    const file = this.selectedFiles.item(0);
     this.currentUpload = new FileUpload(file);
     console.log(this.currentUpload);
-    let storageRef = firebase.storage().ref(`${this.basePath}`);
+    const storageRef = firebase.storage().ref(`${this.basePath}`);
     storageRef.child(`/${this.currentUpload.file.name}`).put(this.currentUpload.file).then(res => {
       storageRef.child(`/${this.currentUpload.file.name}`).getDownloadURL().then(ress => {
         this.imageUrl = ress;
         console.log(this.imageUrl);
       });
     });
-    console.log(this.questions);
-    this.questions.push({id: 1, name: 'a', categoryId: 1, explain: 'b' });
+
+    this.firestoreDataService.addQuestion(this.questionForm.value);
+    // console.log(this.questions);
+    // this.questions.push({id: 1, name: 'a', categoryId: 1, explain: 'b' });
     // this.questions.push(this.questionForm.value);
 
-    //const questionsCollection = this._db.collection<Question>('questions').doc('question');
-    //const question = questionsCollection.set(this.questionForm.value);
+    // const questionsCollection = this._db.collection<Question>('questions').doc('question');
+    // const question = questionsCollection.set(this.questionForm.value);
     // const answersCollection = questionsCollection.collection('answers');
     // for (const element of this.answers) {
     //   console.log(element);
