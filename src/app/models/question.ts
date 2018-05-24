@@ -2,8 +2,9 @@ export class Question {
     id: number;
     name: string;
     categoryId: number;
-    // answers: Answer[];
+    answers: Answer[];
     explain: string;
+    imageUrl: string;
 }
 
 export class Answer {

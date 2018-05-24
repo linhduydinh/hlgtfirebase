@@ -28,7 +28,21 @@ export class FirestoreDataService {
   getUsers() {
     // return this.users;
   }
-  addQuestion(question: Question) {
+  addQuestion(question: any, imageUrl: string) {
+    console.log(question);
+    this.questionsCollection.doc('question_' + `${question.questionId}`).set({id: question.questionId, name: question.questionName,
+      cId: question.categoryId, img: imageUrl, expl: question.questionExplain});
+
+    const answersCollection = this.questionsCollection.doc('question_' + `${question.questionId}`).collection('answers');
+    for (const element of question.answers) {
+      console.log(element);
+      answersCollection.doc('answer_' + `${element.answerId}`).set({
+        id: element.answerId,
+        name: element.answerName,
+        isCorrect: element.isCorrect
+      });
+    }
+
     this.questionsCollection.add(question);
   }
   deleteUser(user) {

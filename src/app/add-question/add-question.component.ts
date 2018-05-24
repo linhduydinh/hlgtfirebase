@@ -77,10 +77,10 @@ export class AddQuestionComponent implements OnInit {
       storageRef.child(`/${this.currentUpload.file.name}`).getDownloadURL().then(ress => {
         this.imageUrl = ress;
         console.log(this.imageUrl);
+        this.firestoreDataService.addQuestion(this.questionForm.value, this.imageUrl);
       });
     });
 
-    this.firestoreDataService.addQuestion(this.questionForm.value);
     // console.log(this.questions);
     // this.questions.push({id: 1, name: 'a', categoryId: 1, explain: 'b' });
     // this.questions.push(this.questionForm.value);
