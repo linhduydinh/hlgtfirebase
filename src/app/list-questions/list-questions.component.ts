@@ -19,6 +19,7 @@ export class ListQuestionsComponent implements OnInit {
       this.listQuestions = res;
       console.log(res);
     });
+    // this.listQuestions = this.firestoreService.getQuestionsByCategoryId(1);
 
   }
 

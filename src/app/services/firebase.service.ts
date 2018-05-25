@@ -3,6 +3,7 @@ import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument 
 
 import { Observable } from 'rxjs/Observable';
 import { Question, Answer } from '../models/question';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 @Injectable()
 export class FirestoreDataService {
@@ -12,30 +13,48 @@ export class FirestoreDataService {
   questionDoc: AngularFirestoreDocument<Question>;
   question: Observable<Question>;
 
-  constructor(public _afs: AngularFirestore) {
-    // this.questions = this._afs.collection('questions').valueChanges();
-
-    // this.questionsCollection = this._afs.collection('questions', x => x.orderBy('firstname', 'asc'));
+  constructor(public _afs: AngularFirestore, private db: AngularFireDatabase) {
     this.questionsCollection = this._afs.collection('questions');
     this.questions = this.questionsCollection.snapshotChanges().map(
-      changes => {
-        return changes.map(
-          a => {
-            const data = a.payload.doc.data() as Question;
-            data.id = a.payload.doc.id;
-            return data;
-          });
-      });
+    changes => {
+      return changes.map(
+        a => {
+          const data = a.payload.doc.data() as Question;
+          return data;
+        });
+    });
   }
 
   getQuestions() {
     return this.questions;
   }
 
+  getQuestionsByCategoryId(id: number): Question[] {
+
+    const listQuestions: any = [];
+    const questionsRef = this._afs.firestore.collection('questions');
+    questionsRef.where('cId', '==', '1')
+                .get()
+                .then(function(querySnapshot) {
+                  console.log(querySnapshot);
+                    querySnapshot.forEach(function(doc) {
+                        // doc.data() is never undefined for query doc snapshots
+                        console.log(doc.id, ' => ', doc.data());
+                        listQuestions.push(doc);
+                    });
+                })
+                .catch(function(error) {
+                    console.log('Error getting documents: ', error);
+                });
+
+      return listQuestions;
+  }
+
   addQuestion(question: any, imageUrl: string) {
-    this.questionsCollection.doc(`${question.questionId}`).set({name: question.questionName, cId: question.categoryId,
-                                                                img: imageUrl, expl: question.questionExplain,
-                                                                answers: question.answers});
+    const questionsRef = this.questionsCollection.doc(`${question.questionId}`);
+    questionsRef.set({name: question.questionName, cId: question.categoryId,
+                      img: imageUrl, expl: question.questionExplain,
+                      answers: question.answers});
   }
 
   getQuestion(id: number) {
@@ -44,12 +63,4 @@ export class FirestoreDataService {
     return this.question;
   }
 
-  // updateQuestion() {
-  //   this.question
-  // }
-
-  deleteUser(user) {
-    // this.userDoc = this._afs.doc(`Users/${user.id}`);
-    // this.userDoc.delete();
-  }
 }
