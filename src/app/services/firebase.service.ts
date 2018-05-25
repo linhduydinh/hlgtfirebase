@@ -6,12 +6,11 @@ import { Question, Answer } from '../models/question';
 
 @Injectable()
 export class FirestoreDataService {
+
   questionsCollection: AngularFirestoreCollection<Question>;
   questions: Observable<Question[]>;
   questionDoc: AngularFirestoreDocument<Question>;
   question: Observable<Question>;
-  answers: Observable<Answer[]>;
-  answerDoc: AngularFirestoreDocument<Answer>;
 
   constructor(public _afs: AngularFirestore) {
     // this.questions = this._afs.collection('questions').valueChanges();
@@ -28,36 +27,20 @@ export class FirestoreDataService {
           });
       });
   }
+
   getQuestions() {
     return this.questions;
   }
-  addQuestion(question: any, imageUrl: string) {
-    console.log(question);
-    this.questionsCollection.doc(`${question.questionId}`).set({name: question.questionName, cId: question.categoryId,
-                                                                img: imageUrl, expl: question.questionExplain});
 
-    const answersCollection = this.questionsCollection.doc(`${question.questionId}`).collection('answers');
-    for (const element of question.answers) {
-      console.log(element);
-      answersCollection.doc(`${element.answerId}`).set({
-        name: element.answerName,
-        isCorrect: element.isCorrect
-      });
-    }
+  addQuestion(question: any, imageUrl: string) {
+    this.questionsCollection.doc(`${question.questionId}`).set({name: question.questionName, cId: question.categoryId,
+                                                                img: imageUrl, expl: question.questionExplain,
+                                                                answers: question.answers});
   }
 
   getQuestion(id: number) {
-    console.log(id);
-    this._afs.collection('questions').doc(`${id}`).ref.get().then( querySnapshot => {
-      querySnapshot.forEach((collection) => {
-          console.log('collection: ' + collection.id);
-          });
-    });
-
     this.questionDoc = this._afs.doc<Question>(`questions/${id}`);
-    this.answerDoc = this._afs.doc<Answer>(`questions/${id}/answers`);
     this.question = this.questionDoc.valueChanges();
-    this.answers = this.answerDoc.valueChanges();
     return this.question;
   }
 

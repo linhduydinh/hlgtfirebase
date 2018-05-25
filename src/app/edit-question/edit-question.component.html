@@ -1,9 +1,9 @@
-<!-- <div class="panel panel-primary">
+<div class="panel panel-primary">
     <div class="panel-heading">
         {{pageTitle}}
     </div>
 
-    <div class="panel-body">
+    <div class="panel-body" *ngIf="question">
         <form class="form-horizontal" novalidate (ngSubmit)="saveQuestion()" [formGroup]="questionForm" >
             <fieldset>
 
@@ -27,6 +27,9 @@
                     <label for="questionImage" class="col-md-2 col-form-label">Question Image</label>
                     <div class="col-md-8">
                         <input formControlName="questionImage" (change)="detectFiles($event)" type="file" class="form-control" id="questionImage" placeholder="Question Image">
+                    </div>
+                    <div class="col-md-2">
+                        <img style="width:200px;height:200px" src="{{question.img}}" />
                     </div>
                 </div>
 
@@ -55,7 +58,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-12" formArrayName="answers" *ngFor="let answer of answers.controls; let i=index">
+                <div class="col-md-12" formArrayName="answers" *ngFor="let answer of questionForm.get('answers').controls; let i=index">
                     <div [formGroupName]="i">
                         <div class="form-group row">
                             <label for="{{'answerId'+i}}" class="col-md-2 col-form-label">Answer {{i}}</label>
@@ -82,7 +85,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-md-4 col-md-offset-2">
-                        <button class="btn btn-primary" type="submit" style="float:right;margin-left:10px" [disabled]='!questionForm.valid'>Save</button>    
+                        <button class="btn btn-primary" type="submit" style="float:right;margin-left:10px">Save</button>    
                      </div>
                 </div>
             </fieldset>
@@ -91,4 +94,4 @@
     </div>
 
 </div>
- -->
+

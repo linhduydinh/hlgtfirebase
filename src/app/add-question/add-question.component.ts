@@ -67,35 +67,15 @@ export class AddQuestionComponent implements OnInit {
   }
 
   saveQuestion() {
-    console.log(this.questionForm);
-
     const file = this.selectedFiles.item(0);
     this.currentUpload = new FileUpload(file);
-    console.log(this.currentUpload);
     const storageRef = firebase.storage().ref(`${this.basePath}`);
     storageRef.child(`/${this.currentUpload.file.name}`).put(this.currentUpload.file).then(res => {
       storageRef.child(`/${this.currentUpload.file.name}`).getDownloadURL().then(ress => {
         this.imageUrl = ress;
-        console.log(this.imageUrl);
         this.firestoreDataService.addQuestion(this.questionForm.value, this.imageUrl);
       });
     });
-
-    // console.log(this.questions);
-    // this.questions.push({id: 1, name: 'a', categoryId: 1, explain: 'b' });
-    // this.questions.push(this.questionForm.value);
-
-    // const questionsCollection = this._db.collection<Question>('questions').doc('question');
-    // const question = questionsCollection.set(this.questionForm.value);
-    // const answersCollection = questionsCollection.collection('answers');
-    // for (const element of this.answers) {
-    //   console.log(element);
-    //   answersCollection.doc('answer' + element.answerId).set({
-    //     answerId: element.answerId,
-    //     answerName: element.answerName,
-    //     isCorrect: element.isCorrect
-    //   });
-    // }
   }
 
 }
