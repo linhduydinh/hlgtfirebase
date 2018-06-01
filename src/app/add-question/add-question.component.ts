@@ -33,7 +33,7 @@ export class AddQuestionComponent implements OnInit {
     this.questionForm = this.fb.group({
       questionId: ['', Validators.required],
       questionName: ['', Validators.required],
-      questionImage: ['', Validators.required],
+      questionImage: [''],
       categoryId: ['', Validators.required],
       questionExplain: ['', Validators.required],
       answers: this.fb.array([this.buildAnswer()])
@@ -67,15 +67,24 @@ export class AddQuestionComponent implements OnInit {
   }
 
   saveQuestion() {
-    const file = this.selectedFiles.item(0);
-    this.currentUpload = new FileUpload(file);
-    const storageRef = firebase.storage().ref(`${this.basePath}`);
-    storageRef.child(`/${this.currentUpload.file.name}`).put(this.currentUpload.file).then(res => {
-      storageRef.child(`/${this.currentUpload.file.name}`).getDownloadURL().then(ress => {
-        this.imageUrl = ress;
-        this.firestoreDataService.addQuestion(this.questionForm.value, this.imageUrl);
+    if (this.selectedFiles) {
+      const file = this.selectedFiles.item(0);
+      this.currentUpload = new FileUpload(file);
+      const storageRef = firebase.storage().ref(`${this.basePath}`);
+      storageRef.child(`/${this.currentUpload.file.name}`).put(this.currentUpload.file).then(res => {
+        storageRef.child(`/${this.currentUpload.file.name}`).getDownloadURL().then(ress => {
+          this.imageUrl = ress;
+          this.firestoreDataService.addQuestion(this.questionForm.value, this.imageUrl);
+        });
       });
-    });
+    } else {
+      this.firestoreDataService.addQuestion(this.questionForm.value, null);
+    }
+    this.answers.removeAt(0);
+    this.answers.removeAt(1);
+    this.answers.removeAt(2);
+    this.answers.removeAt(3);
+    this.questionForm.reset();
   }
 
 }

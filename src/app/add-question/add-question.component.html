@@ -7,49 +7,49 @@
         <form class="form-horizontal" novalidate (ngSubmit)="saveQuestion()" [formGroup]="questionForm" >
             <fieldset>
 
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="questionId">Question Id</label>
+                <div class="form-inline">
+                    <div class="form-group mb-1">
+                        <label class="col-md-1 control-label" for="questionId">Id</label>
 
-                    <div class="col-md-2">
+                        <div class="col-md-1">
                             <input formControlName="questionId" class="form-control" type="number" value="1" id="questionId">
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="col-md-2 control-label" for="categoryId">CategoryId </label>
+                        <div class="col-md-4">
+                            <select class="form-control" id="categoryId" formControlName="categoryId">
+                                <!-- <option selected>Select a Category...</option> -->
+                                <!-- <option value='1'>Những câu đánh dấu</option>
+                                <option value="2">Những câu hay trả lời sai</option> -->
+                                <option selected value="3">Khái Niệm Và Quy Tắc</option>
+                                <!-- <option value="4">Nghiệp Vụ Vận Tải</option>
+                                <option value="5">Đạo Đức Nghề Nghiệp</option>
+                                <option value="6">Kỹ Thuật Lái Xe</option>
+                                <option value="7">Cấu Tạo Và Sửa Chữa</option>
+                                <option value="8">Hệ Thống Biển Báo</option>
+                                <option value="9">Sa Hình</option> -->
+                                <!-- <option value="10">Tất cả 450 câu hỏi</option> -->
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label for="questionImage" class="col-md-1 col-form-label">Image</label>
+                        <div class="col-md-2">
+                            <input formControlName="questionImage" (change)="detectFiles($event)" type="file" class="form-control" id="questionImage" placeholder="Question Image">
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="questionName">Question Name</label>
-
                     <div class="col-md-8">
                         <textarea class="form-control" id="questionName" placeholder="Question Name" formControlName="questionName"></textarea>
                     </div>
                 </div>
-              
-                <div class="form-group">
-                    <label for="questionImage" class="col-md-2 col-form-label">Question Image</label>
-                    <div class="col-md-8">
-                        <input formControlName="questionImage" (change)="detectFiles($event)" type="file" class="form-control" id="questionImage" placeholder="Question Image">
-                    </div>
-                </div>
 
                 <div class="form-group">
-                    <label class="col-md-2 control-label" for="categoryId">CategoryId</label>
-                    <div class="col-md-3">
-                        <select class="form-control" id="categoryId" formControlName="categoryId">
-                            <option selected>Select a Category...</option>
-                            <option value='1'>Alabama</option>
-                            <option value="2">Alaska</option>
-                            <option value="3">Arizona</option>
-                            <option value="4">Arkansas</option>
-                            <option value="5">California</option>
-                            <option value="6">Colorado</option>
-                            <option value="7">Wisconsin</option>
-                            <option value="8">Wyoming</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-md-2 control-label" for="inputQuestionExplain">Explain</label>
-
                     <div class="col-md-8">
                         <textarea class="form-control" id="inputQuestionExplain" placeholder="Question Explain" formControlName="questionExplain"></textarea>
                     </div>

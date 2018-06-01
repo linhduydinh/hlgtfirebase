@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
 import { Question, Answer } from '../models/question';
 import { AngularFireDatabase } from 'angularfire2/database';
 
@@ -52,9 +53,13 @@ export class FirestoreDataService {
 
   addQuestion(question: any, imageUrl: string) {
     const questionsRef = this.questionsCollection.doc(`${question.questionId}`);
-    questionsRef.set({name: question.questionName, cId: question.categoryId,
-                      img: imageUrl, expl: question.questionExplain,
-                      answers: question.answers});
+    if (imageUrl === null) {
+      questionsRef.set({name: question.questionName, cId: question.categoryId,
+        expl: question.questionExplain, answers: question.answers, isFavorite: false, notCorrect: 0});
+    } else {
+      questionsRef.set({name: question.questionName, cId: question.categoryId,
+        img: imageUrl, expl: question.questionExplain, answers: question.answers, isFavorite: false, notCorrect: 0});
+    }
   }
 
   getQuestion(id: number) {
